@@ -2,7 +2,7 @@
 const spawn = require('cross-spawn');
 const fs = require('fs');
 const path = require('path');
-
+const colors = require('colors');
 const projectName = process.argv[2] || 'template-project';
 
 const currentDir = process.cwd();
@@ -26,9 +26,9 @@ const install = () => {
                 if (code !== 0) {
                     console.log('Dev dependecies installation failed. Please retry the installation manually');
                 } else {
-                    console.log('Dev dependencies installed successfully');
+                    console.log(colors.blue('Dev dependencies installed successfully'));
                     console.log('====================================');
-                    console.log('Project has been templated successfully');
+                    console.log(colors.blue('Project has been templated successfully'));
                     console.log('====================================');
                 }
             });
@@ -37,21 +37,17 @@ const install = () => {
 };
 
 const init = () => {
+    console.log(`Creating NodeJS TypeScript project in ${colors.green(projectDir)}`);
     fs.mkdirSync(projectDir, { recursive: true });
 
     const templateDir = path.resolve(__dirname, 'template');
     fs.cpSync(templateDir, projectDir, { recursive: true });
     fs.renameSync(path.join(projectDir, 'gitignore'), path.join(projectDir, '.gitignore'));
 
-    const child = spawn('cd', templateDir, { stdio: 'inherit' });
+    process.chdir(projectDir);
 
-    child.on('close', code => {
-        if (code !== 0) {
-            console.log('There was a problem with the template directory. Please try again.');
-            return;
-        }
-        install();
-    });
+    console.log(colors.blue('Directory created successfully.'));
+    install();
 };
 
 init();
