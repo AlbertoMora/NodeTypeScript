@@ -1,6 +1,6 @@
 {
     "name": "@amora95/create-ts-node-api",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "description": "This is an npx starter template to create your own nodeJS project using TypeScript",
     "bin": {
         "create-ts-node-api": "./index.js"
