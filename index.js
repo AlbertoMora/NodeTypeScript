@@ -41,10 +41,17 @@ const init = () => {
 
     const templateDir = path.resolve(__dirname, 'template');
     fs.cpSync(templateDir, projectDir, { recursive: true });
-
     fs.renameSync(path.join(projectDir, 'gitignore'), path.join(projectDir, '.gitignore'));
 
-    install();
+    const child = spawn('cd', templateDir, { stdio: 'inherit' });
+
+    child.on('close', code => {
+        if (code !== 0) {
+            console.log('There was a problem with the template directory. Please try again.');
+            return;
+        }
+        install();
+    });
 };
 
 init();
